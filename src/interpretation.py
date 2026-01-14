@@ -1,7 +1,5 @@
 
 
-# src/interpretation.py
-
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -33,8 +31,6 @@ def plot_logistic_coefficients(model, feature_cols, title_prefix: str) -> None:
     plt.ylabel("Feature")
     plt.tight_layout()
     plt.show()
-
-
 
 
 def plot_feature_importances(model, feature_cols, title_prefix: str, model_name: str) -> None:
