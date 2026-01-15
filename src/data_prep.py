@@ -58,16 +58,10 @@ def clean_loan_default(df: pd.DataFrame) -> pd.DataFrame:
 
 
 
-
 # ---------- Credit risk ----------
 
-def load_credit_risk(path: str) -> pd.DataFrame:
-    df = pd.read_csv(path)
-    df = to_snake_case(df)
-    return df
-
 def clean_credit_risk(df: pd.DataFrame) -> pd.DataFrame:
-    # make a definite copy once
+    # make a real copy once
     df = df.copy()
 
     df = df.drop_duplicates()
@@ -111,6 +105,7 @@ def clean_credit_risk(df: pd.DataFrame) -> pd.DataFrame:
     df.loc[:, "default_flag"] = df["default_flag"].astype(int)
 
     return df
+
 
 
 
