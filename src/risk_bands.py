@@ -58,14 +58,13 @@ def build_portfolio_df(X, y, model, exposure_col_name, lgd=0.45):
 
     return portfolio
 
-
 def summarize_by_band(portfolio_df):
     """
     Return a summary table by risk_band: volume, exposure, default_rate, avg_pd, expected_loss.
     """
     summary = (
         portfolio_df
-        .groupby("risk_band")
+        .groupby("risk_band", observed=False)
         .agg(
             n_loans=("default", "size"),
             exposure_sum=("exposure", "sum"),
