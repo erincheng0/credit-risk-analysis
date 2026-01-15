@@ -15,13 +15,8 @@ def to_snake_case(df):
     return df
 
 # ---------- Loan default ----------
-
-def load_loan_default(path: str) -> pd.DataFrame:
-    df = pd.read_csv(path)
-    df = to_snake_case(df)
-    return df
-
 def clean_loan_default(df: pd.DataFrame) -> pd.DataFrame:
+    # make sure this is a real copy, not tied to any slice
     df = df.copy()
     print("Inside clean_loan_default, initial cols:", df.columns.tolist())
 
@@ -31,7 +26,7 @@ def clean_loan_default(df: pd.DataFrame) -> pd.DataFrame:
         "d_t_i_ratio": "dti_ratio",
     })
 
-    print("After rename:", df.columns.tolist())  # debug print
+    print("After rename:", df.columns.tolist())
 
     # 2) Drop duplicates using the new name
     df = df.drop_duplicates(subset=["loan_id"])
@@ -42,7 +37,7 @@ def clean_loan_default(df: pd.DataFrame) -> pd.DataFrame:
         "has_mortgage", "has_dependents", "loan_purpose", "has_co_signer",
     ]
     for col in cat_cols:
-        df[col] = df[col].astype("category")
+        df.loc[:, col] = df[col].astype("category")
 
     num_cols = [
         "age", "income", "loan_amount", "credit_score",
@@ -50,16 +45,17 @@ def clean_loan_default(df: pd.DataFrame) -> pd.DataFrame:
         "interest_rate", "loan_term", "dti_ratio",
     ]
     for col in num_cols:
-        df[col] = pd.to_numeric(df[col], errors="coerce")
+        df.loc[:, col] = pd.to_numeric(df[col], errors="coerce")
 
-    df["default"] = df["default"].astype(int)
+    df.loc[:, "default"] = df["default"].astype(int)
 
     for col in ["dti_ratio", "interest_rate"]:
         q1 = df[col].quantile(0.01)
         q99 = df[col].quantile(0.99)
-        df[col] = df[col].clip(lower=q1, upper=q99)
+        df.loc[:, col] = df[col].clip(lower=q1, upper=q99)
 
     return df
+
 
 
 
