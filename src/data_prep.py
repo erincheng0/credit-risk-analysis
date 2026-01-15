@@ -15,6 +15,12 @@ def to_snake_case(df):
     return df
 
 # ---------- Loan default ----------
+
+def load_loan_default(path: str) -> pd.DataFrame:
+    df = pd.read_csv(path)
+    df = to_snake_case(df)
+    return df
+
 def clean_loan_default(df: pd.DataFrame) -> pd.DataFrame:
     # make sure this is a real copy, not tied to any slice
     df = df.copy()
@@ -59,6 +65,11 @@ def clean_loan_default(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # ---------- Credit risk ----------
+
+def load_credit_risk(path: str) -> pd.DataFrame:
+    df = pd.read_csv(path)
+    df = to_snake_case(df)
+    return df
 
 def clean_credit_risk(df: pd.DataFrame) -> pd.DataFrame:
     # make a real copy once
