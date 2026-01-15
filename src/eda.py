@@ -13,7 +13,8 @@ def basic_summary(df: pd.DataFrame, target: str | None = None) -> None:
 
 def plot_default_rate(df: pd.DataFrame, col: str, target: str, title: str | None = None, rotation: int = 45) -> None:
     tmp = (
-        df.groupby(col, observed=False)[target]
+        df[[col, target]]
+        .groupby(col, observed=False)
         .mean()
         .reset_index()
         .sort_values(target, ascending=False)
