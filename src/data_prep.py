@@ -71,6 +71,7 @@ def load_credit_risk(path: str) -> pd.DataFrame:
     return df
 
 def clean_credit_risk(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.copy()
     df = df.drop_duplicates()
 
     cat_cols = [
