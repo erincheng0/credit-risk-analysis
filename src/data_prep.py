@@ -71,7 +71,9 @@ def load_credit_risk(path: str) -> pd.DataFrame:
     return df
 
 def clean_credit_risk(df: pd.DataFrame) -> pd.DataFrame:
+    # make a definite copy once
     df = df.copy()
+
     df = df.drop_duplicates()
 
     cat_cols = [
@@ -82,7 +84,7 @@ def clean_credit_risk(df: pd.DataFrame) -> pd.DataFrame:
     ]
     for col in cat_cols:
         if col in df.columns:
-            df[col] = df[col].astype("category")
+            df.loc[:, col] = df[col].astype("category")
 
     num_cols = [
         "person_age",
@@ -95,22 +97,24 @@ def clean_credit_risk(df: pd.DataFrame) -> pd.DataFrame:
     ]
     for col in num_cols:
         if col in df.columns:
-            df[col] = pd.to_numeric(df[col], errors="coerce")
+            df.loc[:, col] = pd.to_numeric(df[col], errors="coerce")
 
     if "person_emp_length" in df.columns:
-        df["person_emp_length"] = df["person_emp_length"].fillna(
+        df.loc[:, "person_emp_length"] = df["person_emp_length"].fillna(
             df["person_emp_length"].median()
         )
 
     if "loan_int_rate" in df.columns:
-        df["loan_int_rate"] = df["loan_int_rate"].fillna(
+        df.loc[:, "loan_int_rate"] = df["loan_int_rate"].fillna(
             df["loan_int_rate"].median()
         )
 
     if "loan_status" in df.columns:
         df = df.rename(columns={"loan_status": "default_flag"})
-    df["default_flag"] = df["default_flag"].astype(int)
+
+    df.loc[:, "default_flag"] = df["default_flag"].astype(int)
 
     return df
+
 
 
