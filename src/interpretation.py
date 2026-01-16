@@ -23,7 +23,9 @@ def plot_logistic_coefficients(model, feature_cols, title_prefix: str) -> None:
         data=coef_df,
         x="coefficient",
         y="feature",
+        hue="feature",
         palette="coolwarm",
+        legend=False,
     )
     plt.axvline(0, color="black", linewidth=1)
     plt.title(f"{title_prefix} – Logistic Regression Coefficients")
